@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>ThreatPulse IDS Dashboard</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="refresh" content="1">
+    <!-- Bootstrap -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Auto Refresh -->
+
+    
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<div class="text-center mb-4">
+
+    <a
+        href="/download-report"
+        class="btn btn-danger btn-lg shadow"
+    >
+        Download Security Report
+    </a>
+
+</div>
+<body class="bg-dark text-light">
+
+<div class="container-fluid p-4">
+
+    <!-- Header -->
+
+    <div class="text-center mb-5">
+
+        <h1 class="display-4 fw-bold text-danger">
+            ThreatPulse IDS
+        </h1>
+
+        <p class="lead">
+            Advanced Network Intrusion Detection & Monitoring System
+        </p>
+
+    </div>
+
+    <!-- Stats Cards -->
+
+    <div class="row mb-4">
+
+        <!-- TCP -->
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card bg-primary text-white shadow-lg">
+
+                <div class="card-body text-center">
+
+                    <h3>TCP Traffic</h3>
+
+                    <h1>{{ stats.TCP }}</h1>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- UDP -->
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card bg-success text-white shadow-lg">
+
+                <div class="card-body text-center">
+
+                    <h3>UDP Traffic</h3>
+
+                    <h1>{{ stats.UDP }}</h1>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ICMP -->
+
+        <div class="col-md-4 mb-3">
+
+            <div class="card bg-warning text-dark shadow-lg">
+
+                <div class="card-body text-center">
+
+                    <h3>ICMP Traffic</h3>
+
+                    <h1>{{ stats.ICMP }}</h1>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+<!-- Traffic Charts -->
+
+<div class="row mb-5">
+
+    <div class="col-md-6">
+
+        <div class="card bg-secondary shadow-lg">
+
+            <div class="card-header">
+                Protocol Distribution
+            </div>
+
+            <div class="card-body">
+
+                <canvas id="protocolChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="card bg-secondary shadow-lg">
+
+            <div class="card-header">
+                Traffic Summary
+            </div>
+
+            <div class="card-body text-center">
+
+                <h5 class="mb-3">
+                    Total Packets Monitored
+                </h5>
+
+                <h1 class="display-3 text-info">
+
+                    {{
+                        stats.TCP +
+                        stats.UDP +
+                        stats.ICMP
+                    }}
+
+                </h1>
+
+                <hr>
+
+                <p class="lead">
+
+                    Real-Time Network Traffic Analysis
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+    <!-- ALERT SECTION -->
+
+    <div class="card bg-danger mb-5 shadow-lg">
+
+        <div class="card-header">
+
+            <h4 class="mb-0">
+                Live Threat Alerts
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-dark table-striped table-hover align-middle">
+
+                    <thead>
+
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Attack Type</th>
+                            <th>Severity</th>
+                            <th>Source IP</th>
+                            <th>Description</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    {% if alerts %}
+
+                        {% for alert in alerts %}
+
+                        <tr>
+
+                            <td>{{ alert.timestamp }}</td>
+
+                            <td>
+
+                                <span class="badge bg-warning text-dark">
+                                    {{ alert.alert_type }}
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <span class="badge bg-danger">
+                                    {{ alert.severity }}
+                                </span>
+
+                            </td>
+
+                            <td>{{ alert.source_ip }}</td>
+
+                            <td>{{ alert.message }}</td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <tr>
+
+                            <td colspan="5" class="text-center text-success">
+
+                                No active threats detected
+
+                            </td>
+
+                        </tr>
+
+                    {% endif %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- PACKET TABLE -->
+
+    <div class="card bg-secondary shadow-lg">
+
+        <div class="card-header">
+
+            <h4 class="mb-0">
+                Recent Network Packets
+            </h4>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-dark table-striped table-hover align-middle">
+
+                    <thead>
+
+                        <tr>
+                            <th>Protocol</th>
+                            <th>Source IP</th>
+                            <th>Destination IP</th>
+                            <th>Source Port</th>
+                            <th>Destination Port</th>
+                            <th>Direction</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    {% for packet in packets %}
+
+                        <tr>
+
+                            <td>
+
+                                {% if packet.protocol == "TCP" %}
+
+                                    <span class="badge bg-primary">
+                                        TCP
+                                    </span>
+
+                                {% elif packet.protocol == "UDP" %}
+
+                                    <span class="badge bg-success">
+                                        UDP
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-warning text-dark">
+                                        ICMP
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>{{ packet.source_ip }}</td>
+
+                            <td>{{ packet.destination_ip }}</td>
+
+                            <td>{{ packet.source_port }}</td>
+
+                            <td>{{ packet.destination_port }}</td>
+
+                            <td>
+
+                                {% if packet.direction == "INCOMING" %}
+
+                                    <span class="badge bg-danger">
+                                        INCOMING
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-info text-dark">
+                                        OUTGOING
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+
+    <div class="text-center mt-4 text-secondary">
+
+        <small>
+            ThreatPulse IDS • Real-Time Cybersecurity Monitoring Dashboard
+        </small>
+
+    </div>
+
+</div>
+<script>
+
+const ctx = document.getElementById('protocolChart');
+
+new Chart(ctx, {
+
+    type: 'doughnut',
+
+    data: {
+
+        labels: ['TCP', 'UDP', 'ICMP'],
+
+        datasets: [{
+
+            label: 'Protocol Distribution',
+
+            data: [
+                {{ stats.TCP }},
+                {{ stats.UDP }},
+                {{ stats.ICMP }}
+            ],
+
+            borderWidth: 2
+
+        }]
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+
+                labels: {
+                    color: 'white'
+                }
+
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
+<script>
+
+const socket = io();
+
+socket.on("connect", () => {
+
+    console.log("Connected to ThreatPulse IDS");
+
+});
+
+
+socket.on("new_alert", (data) => {
+
+    console.log("New Alert:", data);
+
+});
+
+
+socket.on("new_packet", (data) => {
+
+    console.log("New Packet:", data);
+
+});
+
+</script>
+</body>
+
+</html>

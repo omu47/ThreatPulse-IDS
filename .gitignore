@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+venv/
+env/
+
+threatpulse.db
+
+logs/*.csv
+reports/*.pdf
+
+.idea/
+.vscode/
+
+.DS_Store
