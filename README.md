@@ -6,6 +6,9 @@ ThreatPulse IDS is an advanced real-time network packet monitoring and intrusion
 The system captures live network traffic, analyzes packets, detects suspicious activities, generates security alerts, and visualizes traffic statistics through a modern SOC-style dashboard.
 
 ---
+https://x.com/Umashankar098/status/2057103803770679344
+
+
 
 # Key Features
 
