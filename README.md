@@ -9,6 +9,12 @@ The system captures live network traffic, analyzes packets, detects suspicious a
 https://x.com/Umashankar098/status/2057103803770679344
 
 
+<img width="1370" height="667" alt="threatpulse-IDS1" src="https://github.com/user-attachments/assets/0d4b40b2-192a-44d1-9c7b-7b1db8d54c19" />
+
+<img width="1370" height="667" alt="threatpulse-IDS2" src="https://github.com/user-attachments/assets/ffe073f1-a4d4-44f5-81e0-a03d681d677b" />
+
+
+
 
 # Key Features
 
@@ -24,6 +30,7 @@ https://x.com/Umashankar098/status/2057103803770679344
 - Suspicious IP activity analysis
 - Blacklisted IP identification
 - Real-time security alert generation
+<img width="1280" height="624" alt="threatpulse-IDS3" src="https://github.com/user-attachments/assets/fac56163-7471-4ece-83c5-45f5143a48a7" />
 
 ## AI / Machine Learning Detection
 - Isolation Forest anomaly detection
@@ -48,6 +55,7 @@ https://x.com/Umashankar098/status/2057103803770679344
 - Threat summary generation
 - Protocol statistics reports
 - Alert severity breakdown
+<img width="1280" height="624" alt="threatpulse-IDS4" src="https://github.com/user-attachments/assets/e4a87cb7-1296-4d06-94e9-6e0ef158e1ed" />
 
 ---
 
